@@ -1,7 +1,2 @@
-DSPACE_VERSION=dspace-cris-5.8.0
+DSPACE_VERSION=dspace-5_x_x-cris
 DSPACE_VCS_URL=https://github.com/4science/dspace
-#DSPACE_VCS_REF
-
-#MODS_VERSION
-#MODS_VCS_URL
-#MODS_VCS_REF

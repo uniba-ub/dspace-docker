@@ -9,7 +9,6 @@ language: bash
 script:
   - source ./build.sh
   - clone
-  - merge
   - travis_wait 40 build
 
   # tag the image

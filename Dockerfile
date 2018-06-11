@@ -63,31 +63,3 @@ WORKDIR ${DSPACE_HOME}
 EXPOSE 8080
 ENTRYPOINT ["wait-for-postgres.sh", "postgres"]
 CMD ["start-dspace"]
-
-################
-# Add metadata #
-################
-ARG BUILD_DATE
-ARG VCS_REF
-ARG VERSION
-ARG DSPACE_VERSION
-ARG DSPACE_VCS_URL
-ARG DSPACE_VCS_REF
-ARG MODS_VERSION
-ARG MODS_VCS_URL
-ARG MODS_VCS_REF
-
-LABEL org.label-schema.schema-version="1.0" \
-      org.label-schema.vendor="DSpace-CRIS Community" \
-      org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.version=$VERSION \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/4science/dspace-docker" \
-      org.label-schema.name="dspace-docker" \
-      it.4science.dspace.version=$DSPACE_VERSION \
-      it.4science.dspace.vcs-ref=$DSPACE_VCS_REF \
-      it.4science.dspace.vcs-url=$DSPACE_VCS_URL \
-      it.4science.dspace-mods.version=$MODS_VERSION \
-      it.4science.dspace-mods.vcs-ref=$MODS_VCS_REF \
-      it.4science.dspace-mods.vcs-url=$MODS_VCS_URL
-

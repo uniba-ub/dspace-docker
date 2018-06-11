@@ -16,37 +16,27 @@ DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-4science/dspace-cris}
 
 
 function build(){
-     docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} \
-     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-     --build-arg VCS_REF="${TRAVIS_COMMIT}" \
-     --build-arg VERSION="${TRAVIS_TAG}" \
-     --build-arg DSPACE_VERSION="${DSPACE_VERSION}" \
-     --build-arg DSPACE_VCS_URL="${DSPACE_VCS_URL}" \
-     --build-arg DSPACE_VCS_REF="${DSPACE_VCS_REF}" \
-     --build-arg MODS_VERSION="${MODS_VERSION}" \
-     --build-arg MODS_VCS_URL="${MODS_VCS_URL}" \
-     --build-arg MODS_VCS_REF="${MODS_VCS_REF}" .
+     docker build \
+       --label org.label-schema.schema-version="1.0" \
+       --label org.label-schema.vendor="DSpace-CRIS Community" \
+       --label org.label-schema.build-date=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+       --label org.label-schema.version=${TRAVIS_TAG} \
+       --label org.label-schema.vcs-ref=${TRAVIS_COMMIT} \
+       --label org.label-schema.vcs-url="https://github.com/4science/dspace-docker" \
+       --label org.label-schema.name="dspace-docker" \
+       --label it.4science.dspace.version=${DSPACE_VERSION} \
+       --label it.4science.dspace.vcs-ref=${DSPACE_VCS_REF} \
+       --label it.4science.dspace.vcs-url=${DSPACE_VCS_URL} \
+       --tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
 }
 
 function clone(){
-    echo "Clone 4science/dspace (=dspace-cris)"
+    echo "Clone 4science/dspace"
     git clone --depth 1 --branch ${DSPACE_VERSION} ${DSPACE_VCS_URL} dspace
-
-    echo "Clone modifications"
-    [ -n "${MODS_VCS_URL}" ] && git clone --depth 1 "${MODS_VCS_URL}" mods || echo "No Modifications" ;
-    echo "Checkout branch"
-    [ -n "${MODS_VERSION}" ] && git checkout "${MODS_VERSION}" || true ;
-}
-
-function merge(){
-    echo "Merge sources"
-    [ -n "${MODS_VCS_URL}" ] && rsync -a mods/ dspace/ || true
 }
 
 if [[ "${1}" == "clone" ]]; then
   clone
-elif [[ "${1}" == "merge" ]]; then
-   merge
 elif [[ "${1}" == "build" ]]; then
   if [[ -n ${CI} ]]; then
     echo "Running in CI"
@@ -58,9 +48,8 @@ fi
 
 if [[ $# -eq 0 ]]; then
   if [[ ! -n ${CI} ]]; then
-    echo "no CI and no arguments (exec clone merge build"
+    echo "no CI and no arguments (exec clone and build)"
     clone
-    merge
     build
 #  else
 #    echo "CI without arguments => exiting"

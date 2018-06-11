@@ -1,14 +1,14 @@
 # The contents of this file are subject to the license and copyright
 # detailed in the LICENSE and NOTICE files at the root of the source
 
-version: '3.3'
+version: '3.6'
 
 networks:
   backend:
 
 volumes:
-  dspace: {}
-  postgres: {}
+  dspace:
+  postgres:
 
 services:
   postgres:
@@ -19,23 +19,10 @@ services:
       - postgres:/var/lib/postgresql/data
 
   dspace:
-    image: 4science/dspace-cris:cris-5.8.0
+    image: 4science/dspace-cris:latest
 #    build:
 #      context: ./
 #      dockerfile: Dockerfile
-# Add meta information to the image
-#      args:
-# Specify the base repository 
-#        - DSPACE_VERSION=""
-#        - DSPACE_VCS_URL=""
-#        - DSPACE_VCS_REF=""
-# Specify the repository with custom changes
-#        - MODS_VERSION=""
-#        - MODS_VCS_URL=""
-#        - MODS_VCS_REF=""
-#        - BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-#        - VCS_REF="${TRAVIS_COMMIT}"
-#        - VERSION="${TRAVIS_TAG}"
 
     networks:
       backend:
